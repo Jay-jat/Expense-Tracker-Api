@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Expense Tracker</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 45px;
+      border-radius: 12px;
+      width: 420px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+
+    .actions a {
+      display: inline-block;
+      text-decoration: none;
+      margin: 10px;
+      padding: 12px 26px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .register {
+      background: #ffffff;
+      color: #243b55;
+    }
+
+    .login {
+      border: 2px solid #ffffff;
+      color: #ffffff;
+    }
+
+    .actions a:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+    <p>Track your income and expenses in one place</p>
+
+    <div class="actions">
+      <a class="register" href="/register">Create Account</a>
+      <a class="login" href="/login">Login</a>
+    </div>
+  </div>
+</body>
+</html>
