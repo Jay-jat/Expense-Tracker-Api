@@ -3,38 +3,65 @@ const User = require("../models/User");
 
 const registerUser = async (req, res) => {
   try {
-    // Check all the fields
     const { name, email, password } = req.body;
-    if ((!name, !email, !password)) {
-      res.status(400).json({
-        message: "All fields are required",
-      });
+
+    if (!name || !email || !password) {
+      return res.status(400).send("All fields are required");
     }
-    // Check if user already exists
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json({
-        message: "User already exists",
-      });
+      return res.status(400).send("User already exists");
     }
-    // Hash Password
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
-    const user = await User.create({
+    await User.create({
       name,
       email,
       password: hashedPassword,
     });
-    // Send response
+
     res.redirect("/");
   } catch (error) {
-    res.status(500).json({
-      message: "Server error",
-    });
+    console.error("REGISTER ERROR:", error);
+    res.status(500).send("Server Error");
   }
 };
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).send("All fields are required");
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send("Invalid email or password");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).send("Invalid email or password");
+    }
+
+    req.session.user = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
+    res.redirect("/");
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };

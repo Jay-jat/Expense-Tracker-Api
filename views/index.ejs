@@ -37,7 +37,7 @@
     p {
       font-size: 14px;
       opacity: 0.9;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .actions a {
@@ -60,6 +60,11 @@
       color: #ffffff;
     }
 
+    .logout {
+      background: #ffffff;
+      color: #243b55;
+    }
+
     .actions a:hover {
       opacity: 0.85;
     }
@@ -72,8 +77,13 @@
     <p>Track your income and expenses in one place</p>
 
     <div class="actions">
-      <a class="register" href="/register">Create Account</a>
-      <a class="login" href="/login">Login</a>
+      <% if (loggedIn) { %>
+        <p>Welcome, <strong><%= user.name %></strong></p>
+        <a class="logout" href="/logout">Logout</a>
+      <% } else { %>
+        <a class="register" href="/register">Create Account</a>
+        <a class="login" href="/login">Login</a>
+      <% } %>
     </div>
   </div>
 </body>

@@ -1,29 +1,54 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
 
 const app = express();
 
-// middlewares
+// body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// View Engine
+// ✅ SESSION MIDDLEWARE (FIRST)
+app.use(
+  session({
+    secret: "expense_tracker_secret",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+// Session Middleware
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+// view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Authentication Routes
+// routes
 const authRoutes = require("./routes/auth.routes");
 app.use("/api/auth", authRoutes);
 
+// pages
 app.get("/", (req, res) => {
-  res.render("index");
+  const loggedIn = !!req.session.user;
+  res.render("index", { loggedIn });
 });
 
-// Register User
 app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
 
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
+});
 
 module.exports = app;
