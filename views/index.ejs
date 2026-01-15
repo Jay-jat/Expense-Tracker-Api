@@ -12,7 +12,7 @@
 
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(135deg, #141e30, #243b55);
       display: flex;
       justify-content: center;
@@ -23,31 +23,33 @@
     .container {
       background: rgba(255, 255, 255, 0.12);
       padding: 45px;
-      border-radius: 12px;
+      border-radius: 16px;
       width: 420px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
       text-align: center;
-      backdrop-filter: blur(10px);
     }
 
     h1 {
       margin-bottom: 10px;
-      font-size: 30px;
+      font-size: 32px;
+      letter-spacing: 0.5px;
     }
 
-    p {
+    .subtitle {
       font-size: 14px;
       opacity: 0.9;
-      margin-bottom: 25px;
+      margin-bottom: 35px;
     }
 
     .actions a {
       display: inline-block;
       text-decoration: none;
-      margin: 10px;
-      padding: 12px 26px;
+      margin: 8px;
+      padding: 12px 28px;
       border-radius: 6px;
-      font-weight: bold;
-      transition: 0.3s;
+      font-weight: 600;
+      transition: 0.25s ease;
     }
 
     .register {
@@ -60,13 +62,15 @@
       color: #ffffff;
     }
 
-    .logout {
-      background: #ffffff;
-      color: #243b55;
+    .actions a:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
     }
 
-    .actions a:hover {
-      opacity: 0.85;
+    .footer-note {
+      margin-top: 30px;
+      font-size: 12px;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -74,16 +78,15 @@
 <body>
   <div class="container">
     <h1>Expense Tracker</h1>
-    <p>Track your income and expenses in one place</p>
+    <p class="subtitle">Track your income and expenses in one place</p>
 
     <div class="actions">
-      <% if (loggedIn) { %>
-        <p>Welcome, <strong><%= user.name %></strong></p>
-        <a class="logout" href="/logout">Logout</a>
-      <% } else { %>
-        <a class="register" href="/register">Create Account</a>
-        <a class="login" href="/login">Login</a>
-      <% } %>
+      <a class="register" href="/register">Create Account</a>
+      <a class="login" href="/login">Login</a>
+    </div>
+
+    <div class="footer-note">
+      Simple • Secure • Daily expense tracking
     </div>
   </div>
 </body>

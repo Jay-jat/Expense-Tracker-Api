@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Expenses</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #ffffff;
+      padding: 30px;
+    }
+
+    .wrapper {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .logout {
+      text-decoration: none;
+      background: #ffffff;
+      color: #243b55;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    form input,
+    form select {
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      width: 100%;
+    }
+
+    form button {
+      grid-column: span 2;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      background: #ffffff;
+      color: #243b55;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    form button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .expense-list {
+      margin-top: 10px;
+    }
+
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .expense-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .expense-left small {
+      opacity: 0.7;
+      font-size: 12px;
+    }
+
+    .amount {
+      font-weight: bold;
+    }
+
+    .income {
+      color: #4caf50;
+    }
+
+    .expense {
+      color: #ff6b6b;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ff6b6b;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      opacity: 0.8;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h2>Hello, <%= user.name %></h2>
+      <a class="logout" href="/logout">Logout</a>
+    </div>
+
+    <!-- Add Expense -->
+    <div class="card">
+      <h3>Add New Expense</h3>
+
+      <form action="/expenses/add" method="POST">
+        <input type="number" name="amount" placeholder="Amount" required />
+
+        <select name="type" required>
+          <option value="">Select Type</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+
+        <input type="text" name="category" placeholder="Category" required />
+        <input type="text" name="note" placeholder="Note (optional)" />
+
+        <button type="submit">Add Expense</button>
+      </form>
+    </div>
+
+    <!-- Expense List -->
+    <div class="card">
+      <h3>Your Expenses</h3>
+
+      <div class="expense-list">
+        <% if (expenses && expenses.length > 0) { %>
+          <% expenses.forEach(function(exp) { %>
+            <div class="expense-item">
+              <div class="expense-left">
+                <strong><%= exp.category %></strong>
+                <small><%= exp.note || "No note" %></small>
+              </div>
+
+              <div class="amount <%= exp.type === 'income' ? 'income' : 'expense' %>">
+                ₹ <%= exp.amount %>
+              </div>
+
+              
+              <form action="/expenses/delete/<%= exp._id %>" method="POST">
+                <button class="delete-btn" type="submit">✖</button>
+              </form>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="empty">
+            No expenses added yet.
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
